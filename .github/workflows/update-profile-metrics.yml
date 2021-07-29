@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Monophonique91 Profile Metrics (left)
-        if: ${{ success() || failure() }}
         uses: lowlighter/metrics@latest
         with:
           filename: metrics.svg
@@ -33,7 +32,6 @@ jobs:
           config_order: base.header, isocalendar, languages, notable, topics
 
       - name: Monophonique91 Profile Metrics (right)
-        if: ${{ success || failure() }}
         uses: lowlighter/metrics@latest
         with:
           filename: metrics.personal.anilist.svg
