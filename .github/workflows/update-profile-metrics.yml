@@ -1,36 +1,46 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
-
-# Controls when the workflow will run
+name: Profile Metrics
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+  schedule:
+    - cron: "0 0-23/4 * * *"
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches:
+      - master
+      - main
   workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  github-profile-metrics:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Monophonique91 Profile Metrics (left)
+        if: ${{ success() || failure() }}
+        uses: lowlighter/metrics@latest
+        with:
+          filename: metrics.svg
+          token: ${{ secrets.METRICS }}
+          base: header
+          plugin_isocalendar: yes
+          plugin_languages: yes
+          plugin_languages_ignored: html, css, tex, less, dockerfile, makefile, qmake, lex, cmake, shell, gnuplot, vue, scala, c, c++, python, ejs
+          plugin_languages_details: lines, percentage
+          plugin_languages_sections: most-used, recently-used
+          plugin_languages_indepth: yes
+          plugin_languages_limit: 3
+          plugin_topics: yes
+          plugin_topics_limit: 0
+          plugin_topics_mode: mastered
+          plugin_notable: yes
+          plugin_notable_repositories: yes
+          config_order: base.header, isocalendar, languages, notable, topics
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Monophonique91 Profile Metrics (right)
+        if: ${{ success || failure() }}
+        uses: lowlighter/metrics@latest
+        with:
+          filename: metrics.personal.anilist.svg
+          token: ${{ secrets.METRICS }}
+          plugin_anilist: yes
+          plugin_anilist_medias: techno
+          plugin_anilist_sections: favorites, characters
+          plugin_anilist_limit: 2
+          plugin_anilist_limit_characters: 22
+          config_order: anilist
