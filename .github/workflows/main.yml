@@ -1,14 +1,26 @@
 name: ProfileMetrics
-on:
-  # Update interval
-  schedule: [{cron: "0 * * * *"}]
-  # Optional options
-  workflow_dispatch:
-  push: {branches: ["master", "main"]}
+on: [push]
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
     steps:
-      - uses: lowlighter/metrics@latest
+      - uses: lowlight/Metrics@latest
         with:
           token: ${{ secrets.METRICS }}
+          # Calendar
+          plugin_isocalendar: yes                              # Displays the plugin IsoCalendar
+          plugin_isocalendar_duration: full-year               # Set IsoCalendar duration to full-year
+          # Most used Languages
+          plugin_languages: yes                                # Display the plugin Most used Languages
+          plugin_languages_ignored: html, css                  # Do not display following Languages 
+          plugin_languages_colors: "0:orange, c++:ff0000"      # Make most used languages orange and c++ red
+          plugin_languages_details: bytes-size, percentage     # Additional display total bytes size and percentage
+          plugin_languages_threshold: 2%                       # Hides all languages less then 2%
+          plugin_languages_limit: 8                            # Display up to 8 languages
+          plugin_languages_sections: most-used, recently-used  # Display most used and recently used languages stats
+          plugin_languages_indepth: no                         # Get indepth stats (see documentation before enabling)
+          plugin_languages_recent_load: 500                    # Load up to 500 events to compute recently used stats
+          plugin_languages_recent_days: 7                      # Limit recently used stats to last week
+          commits_authoring: monophonique@project-waaagh.net   # Surname or email addresses used to identify your commits
+  
+          
